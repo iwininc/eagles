@@ -7,4 +7,4 @@ exports.Router = Router;
 // set up routes
 
 exports.createServer = server;
-// user: var server = eagles.createServer(3000, router.route());
+// user: var server = eagles.createServer(router.route(), 3000);
