@@ -5,8 +5,8 @@ var gutil = require('gulp-util');
 
 gulp.task('mocha', function() {
   return gulp.src(['test/**/*test.js'], { read: false })
-  .pipe(mocha({ reporter: 'list' }))
-  .on('error', gutil.log);
+    .pipe(mocha())
+    .on('error', gutil.log);
 });
 
 gulp.task('watch-mocha', function() {
