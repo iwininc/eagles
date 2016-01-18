@@ -8,7 +8,7 @@ describe('Router', () => {
     expect(router.routeLibrary).to.be.an('object');
   });
 
-  it('should be about to register a get request', () => {
+  it('should be able to register a get request', () => {
     var router = new Router();
     var testReq = { method: 'GET', url: '/test' };
     var called = false;
@@ -23,7 +23,7 @@ describe('Router', () => {
     expect(called).to.eql(true);
   });
 
-  it('should be about to register a post request', () => {
+  it('should be able to register a post request', () => {
     var router = new Router();
     var testReq = { method: 'POST', url: '/test' };
     var called = false;
@@ -56,7 +56,36 @@ describe('Router', () => {
     };
 
     var router = new Router();
-    router.route()({ method: 'GET', url: '' }, testRes);
+    router.route()({ method: 'GET', url: '/doesnotexist' }, testRes);
     expect(called).to.eql(3);
+  });
+
+  it('should be able to register a route with parameters and pass to callback', () => {
+    var router = new Router();
+    var testReq = { method: 'GET', url: '/greet/morning/world' };
+    var called = false;
+
+    router.get('/greet/:time/:name', function(req, res, param) {
+      called = true;
+      expect(param.time).to.eql('morning');
+      expect(param.name).to.eql('world');
+    });
+
+    router.route()(testReq, null);
+    expect(called).to.eql(true);
+  });
+
+  it('should route URL containing query string and pass to callback', () => {
+    var router = new Router();
+    var testReq = { method: 'GET', url: '/greet?name=world' };
+    var called = false;
+
+    router.get('/greet', function(req, res, query) {
+      called = true;
+      expect(query.name).to.eql('world');
+    });
+
+    router.route()(testReq, null);
+    expect(called).to.eql(true);
   });
 });
