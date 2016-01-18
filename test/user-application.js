@@ -27,4 +27,17 @@ router.get('/hello3', function(req, res) {
   res.end();
 });
 
+router.get('/sayhi', function(req, res, query) {
+  eagles.resHead(res, 200, 'plain');
+  eagles.resBody(res, 'oh hi ' + query.name);
+  res.end();
+});
+
+router.get('/greet/:time/:name', function(req, res, param) {
+  eagles.resHead(res, 200, 'plain');
+  eagles.resBody(res, 'top of the ' + param.time + ' to you, ' + param.name);
+  res.end();
+});
+
+
 var server = eagles.createServer(router.route(), 3000);
