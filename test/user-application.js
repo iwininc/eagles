@@ -39,5 +39,18 @@ router.get('/greet/:time/:name', function(req, res, param) {
   res.end();
 });
 
+router.get('/read', function(req, res) {
+  eagles.resHead(res, 200, 'json');
+  eagles.sendFile(res, __dirname + '/test_data/random.json');
+});
+
+router.get('/readobj', function(req, res) {
+  eagles.sendJSON(res, {msg: 'hello from the other side'});
+});
+
+router.get('/readJSON', function(req, res) {
+  eagles.sendJSON(res,  __dirname + '/test_data/random.json');
+});
+
 
 var server = eagles.createServer(router.route(), 3000);
