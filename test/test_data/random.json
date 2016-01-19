@@ -1,0 +1,28 @@
+[
+  {
+    "index": 0,
+    "isActive": false,
+    "age": 37,
+    "eyeColor": "green",
+    "name": "Beulah Ramsey",
+    "gender": "female",
+    "company": "FARMAGE",
+    "email": "beulahramsey@farmage.com",
+    "phone": "+1 (859) 423-2468",
+    "address": "560 Middagh Street, Ellerslie, Ohio, 1610",
+    "registered": "2016-01-06T11:01:33 +08:00",
+    "latitude": -57.027356,
+    "longitude": 94.590213,
+    "tags": [
+      "dolore",
+      "duis",
+      "proident",
+      "cupidatat",
+      "velit",
+      "occaecat",
+      "dolor"
+    ],
+    "greeting": "Hello, Beulah Ramsey! You have 6 unread messages.",
+    "favoriteFruit": "apple"
+  }
+]

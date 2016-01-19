@@ -17,5 +17,4 @@ describe('Server setup', () => {
     var portNum = parseInt(this.server['_connectionKey'].substring(5, 9));
     expect(portNum).to.eql(3000);
   });
-
 });

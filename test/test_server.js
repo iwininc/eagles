@@ -7,4 +7,4 @@ router.get('/hello', function(req, res) {
   res.end();
 });
 
-var server = eagles.createServer(router.route(), 3000);
+eagles.createServer(router.route(), 3000);
