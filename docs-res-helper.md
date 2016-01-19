@@ -10,7 +10,7 @@ npm install eagles
 # Getting Started
 The backbone of Eagles is comprised of a HTTP server creator and a router. Here is the simplest way to implement Eagles:
 
-```
+```javascript
 const eagles = require('eagles');
 
 var router = new eagles.Router();
@@ -24,25 +24,25 @@ This segment of code sets up a HTTP server listening at port 3000, and a router 
 ### Creating a Server
 Eagles provides an easy way to create an up-and-running server:
 
-```
+```javascript
 eagles.createServer(requestListener[, port])
 ```
 
 `.createServer()` returns a `http.Server` object. Like the Node.js HTTP interface, the method takes a `requestListener` function which takes the following form:
 
-```
+```javascript
 function (request, response) { }
 ```
 
 The `requestListener` is automatically added to the HTTP `request` event. To dynamically generate the listener, we recommend using the Eagles' router function.
 
-`.createServer()` also takes an optional parameter for the hosting `port` number. It is defaulted to 3000 if left unspecified.
+`.createServer()` also takes an optional parameter for the hosting `port` number. It is defaulted to 3000 unless otherwise specified.
 
 ## Router
 ### Initiate Router
 Create an instance of Eagles' router by calling the constructor:
 
-```
+```javascript
 var router = new eagles.Router();
 ```
 
@@ -52,8 +52,7 @@ Saving the instance allows you to add routes and referencing it in your server's
 Five different methods (`.get()`, `.post()`, `.put()`, `.patch()`, `.delete()`), corresponding to five different REST verbs, are available for each router instance. Each method takes a URL and a request listener function as its parameters. The request listener follows the same format as a HTTP server `requestListener`, with the same [list of methods](https://nodejs.org/api/http.html) available for the request and response objects.
 
 Here is a simple example of routing a `GET` request to `/hello`:
-
-```
+```javascript
 var router = new eagles.Router();
 router.get('/hello', function(req, res) {
   res.writeHead(200, {'Content-Type': 'text/plain'});
@@ -62,9 +61,40 @@ router.get('/hello', function(req, res) {
 });
 ```
 
-See below for Eagles' helper methods for writing server response.
+Visit the [next section](#response-helper) for Eagles' helper methods for writing server response.
 
-#### Params & Query String
+
+#### Parameters in URL
+You can set up your route such that parameters can be passed through the URL. Name the variables as you declare the URL and precede each with a colon (`:`). The parameters can then be accessed as properties of a `param` object, which will be the third argument in the request listener function.
+
+```javascript
+router.get('/greet/:time/:name', function(req, res, param) {
+  eagles.resHead(res, 200, 'plain');
+  eagles.resBody(res, 'good ' + param.time + ', ' + param.name);
+  res.end();
+});
+
+// GET /greet/morning/felicia
+// will yield the response 'good morning, felicia'
+```
+From this example, any `GET` requests with a URL that starts with `/greet` will be matched to this pattern.
+If there are more parameters than the setup specification, the excess parameters will be ignored. However, if there are less parameters, the lacking fields will evaluate to `undefined`.
+
+
+#### Parameters in Query String
+Another way to pass in parameters is through the query string. The parameters are parsed and become accessible as properties of the third argument (`query`) in the request listener function. Be sure to end the URL with a question mark (`?`) to indicate the expectation of a query string. Currently, Eagles only support one parameter in the query string.
+
+```javascript
+router.get('/sayhi?', function(req, res, query) {
+  eagles.resHead(res, 200, 'plain');
+  eagles.resBody(res, 'hi there ' + query.name);
+  res.end();
+});
+
+// GET /sayhi?name=felicia
+// will yield the response 'hi there felicia'
+```
+If there is no query string given in the request, `query` will be an empty object and subsequently its properties will be undefined.
 
 ### Dynamic Routing
 Any routes you have or will set up are available in your router instance. Calling `router.route()` will search for and run the function you've set up for that instance.
@@ -106,8 +136,7 @@ eagles.contentType(res, type);
 | `'png'`  | `'image/png'` |
 
 **Use both `.status()` and `.contentType()` to write the header:**
-
-```
+```javascript
 router.get('/hello', function(req, res) {
   eagles.status(res, 200);
   eagles.contentType(res, 'plain');
@@ -116,8 +145,7 @@ router.get('/hello', function(req, res) {
 ```
 
 Both methods are **chainable**, this code does the same things as above:
-
-```
+```javascript
 router.get('/hello', function(req, res) {
   eagles.status(res, 200).contentType(res, 'plain');
   ...
@@ -127,7 +155,6 @@ router.get('/hello', function(req, res) {
 
 ### Writing the Header in One Go: `.resHead()`
 Combining `.status()` and `.contentType()`, `.resHead()` is an even faster way to write header and it takes the following format:
-
 ```
 eagles.resHead(res, code, type);
 ```
@@ -142,8 +169,7 @@ eagles.resBody(res, content);
 ```
 
 **Here are `.resHead()` and `.resBody()` in action:**
-
-```
+```javascript
 router.get('/hello', function(req, res) {
   eagles.resHead(res, 200, 'plain');
   eagles.resBody(res, 'world');
@@ -152,7 +178,7 @@ router.get('/hello', function(req, res) {
 ```
 
 Both methods are again **chainable**, so this snippet is equivalent to the one above:
-```
+```javascript
 router.get('/hello', function(req, res) {
   eagles.resHead(res, 200, 'plain').resBody(res, 'world');
   res.end();
@@ -167,7 +193,7 @@ eagles.sendFile(res, filepath);
 
 Nothing will get through as the response if `filepath` is invalid. Be sure to specify in the header a correctly content type before calling `.sendFile()`:
 
-```
+```javascript
 router.get('/helloFile', function(req, res) {
   eagles.resHead(res, 200, 'html');
   eagles.sendFile(res, 'path/to/file.html');
@@ -184,7 +210,7 @@ eagles.sendJSON(res, input);
 
 Unlike other response helper methods, `.sendJSON()` defaults to send a 200 status code, set the content type to `application/json`, and automatically end the response once the data is through. So when using `.sendJSON`, this is all you need within the request listener:
 
-```
+```javascript
 router.get('/helloJSON', function(req, res) {
   eagles.sendJSON(res, {msg: 'hello world'});
 });

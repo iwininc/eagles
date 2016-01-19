@@ -26,7 +26,7 @@ router.get('/hello3', function(req, res) {
   res.end();
 });
 
-router.get('/sayhi', function(req, res, query) {
+router.get('/sayhi?', function(req, res, query) {
   eagles.resHead(res, 200, 'plain');
   eagles.resBody(res, 'oh hi ' + query.name);
   res.end();
