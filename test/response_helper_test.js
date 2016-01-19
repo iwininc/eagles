@@ -150,7 +150,7 @@ describe('Response helper', () => {
       it('should response with content of file if filepath is specified', (done) => {
         var testFilepath = __dirname + '/test_data/random.json';
         this.router.get('/test', (req, res) => {
-          eagles.sendFile(res, testFilepath);
+          eagles.sendJSON(res, testFilepath);
         });
         request('localhost:3000')
           .get('/test')
@@ -160,6 +160,20 @@ describe('Response helper', () => {
               expect(res.body).to.eql(JSON.parse(data.toString()));
               done();
             });
+          });
+      });
+
+      it('should send back the filepath if file is not a json', (done) => {
+        var testFilepath = __dirname + '/test_data/two.html';
+        this.router.get('/test', (req, res) => {
+          eagles.sendJSON(res, testFilepath);
+        });
+        request('localhost:3000')
+          .get('/test')
+          .end((err, res) => {
+            expect(err).to.eql(null);
+            expect(res.body).to.eql(testFilepath);
+            done();
           });
       });
     });

@@ -13,8 +13,6 @@ gulp.task('watch-mocha', function() {
   gulp.watch(['lib/**', 'test/**'], ['mocha']);
 });
 
-var files = ['**', '**/*'];
-
 gulp.task('lint', function() {
   return gulp.src(['**/*.js', '!**/node_modules/*'])
     .pipe(eslint({

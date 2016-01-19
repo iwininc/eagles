@@ -1,10 +1,7 @@
 [
   {
     "index": 0,
-    "guid": "12f2e6d1-33d1-4ab3-b82e-79d716e4e02f",
     "isActive": false,
-    "balance": "$2,316.78",
-    "picture": "http://placehold.it/32x32",
     "age": 37,
     "eyeColor": "green",
     "name": "Beulah Ramsey",
@@ -13,7 +10,6 @@
     "email": "beulahramsey@farmage.com",
     "phone": "+1 (859) 423-2468",
     "address": "560 Middagh Street, Ellerslie, Ohio, 1610",
-    "about": "Sint nisi nisi proident proident quis commodo dolor est reprehenderit aliquip exercitation cillum deserunt. Deserunt exercitation tempor non excepteur voluptate eu irure enim pariatur non laboris magna labore dolore. Laborum ex magna velit irure anim ipsum quis ullamco exercitation do reprehenderit labore. Do amet enim velit Lorem fugiat eiusmod mollit excepteur laboris do. Ad tempor qui sint esse aliqua eu occaecat et culpa. Culpa quis occaecat dolor voluptate officia dolore laboris amet aliqua in ex ullamco.\r\n",
     "registered": "2016-01-06T11:01:33 +08:00",
     "latitude": -57.027356,
     "longitude": 94.590213,

@@ -40,8 +40,8 @@ router.get('/greet/:time/:name', function(req, res, param) {
 });
 
 router.get('/read', function(req, res) {
-  eagles.resHead(res, 200, 'json');
-  eagles.sendFile(res, __dirname + '/test_data/random.json');
+  eagles.resHead(res, 200, 'html');
+  eagles.sendFile(res, __dirname + '/test_data/two.html');
 });
 
 router.get('/readobj', function(req, res) {
@@ -52,5 +52,9 @@ router.get('/readJSON', function(req, res) {
   eagles.sendJSON(res,  __dirname + '/test_data/random.json');
 });
 
+router.get('/readnotJSON', function(req, res) {
+  eagles.sendJSON(res,  __dirname + '/test_data/two.html');
+});
 
-var server = eagles.createServer(router.route(), 3000);
+
+eagles.createServer(router.route(), 3000);
