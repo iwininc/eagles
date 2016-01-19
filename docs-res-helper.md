@@ -69,31 +69,73 @@ Any routes you have or will set up are available in your router instance. Callin
 
 ## Response Helper
 ### Header Methods
+#### Status Code: `.status()`
+`.status()` sets the response status code:
+
+```
+eagles.status(res, code);
+```
+
+The `code` should be a 3-digit HTTP status code.
+
+#### Content Type: `.contentType()`
+`.contentType()` sets the type of the response body:
+
+```
+eagles.contentType(res, type);
+```
+`type` should correspond to the MIME type of the content. Use full MIME type identifier (e.g. `text/html`) or Eagles' shortcut for common content types:
+
+| Shortcut | MIME Type |
+| -------- | --------- |
+| `'plain'`| `'text/plain'` |
+| `'html'` | `'text/html'` |
+| `'xml'`  | `'text/xml'` |
+| `'json'` | `'application/json'` |
+| `'octet'`| `'application/octet-stream'` |
+| `'form'` | `'multipart/form-data'` |
+| `'jpg'`  | `'image/jpeg'` |
+| `'png'`  | `'image/png'` |
+
+Use both `.status()` and `.contentType()` to write the header:
+
+```
+router.get('/hello', function(req, res) {
+  eagles.status(res, 200);
+  eagles.contentType(res, 'plain');
+  ...
+});
+```
+
+Both methods are **chainable**, this code does the same things as above:
+
+```
+router.get('/hello', function(req, res) {
+  eagles.status(res, 200).contentType(res, 'plain');
+  ...
+});
+```
+
 #### Writing the header in one go: `.resHead()`
 Typing out `res.writeHead()` with status code and content type over and over again can be hideous.
 
 `.resHead()` is a response helper method available with Eagles. By passing in the `res` object as reference and parameters for status code and content type, Eagles provides an easy way to do the same task. It takes the following format:
 
 ```
-eagles.resHead(res, statusCode, contentType);
+eagles.resHead(res, code, type);
 ```
-`contentType` takes the same shortcuts as described in the content type section below.
+`type` takes the same shortcuts as described in the content type section above.
 
 Here's the code in action:
 
 ```
 router.get('/hello', function(req, res) {
-  eagles.resHead(res, 200, 'text/plain');
+  eagles.resHead(res, 200, 'plain');
   ...
 });
 
 ```
 
-#### Status Code: `.status()`
-
-
-
-#### Content Type: `.contentType()`
 ### Body Methods
 #### Writing Response Body Data
 #### Sending File
