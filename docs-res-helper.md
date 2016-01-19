@@ -64,21 +64,29 @@ router.get('/hello', function(req, res) {
 
 See below for Eagles' helper methods for writing server response.
 
+#### Params & Query String
+
 ### Dynamic Routing
 Any routes you have or will set up are available in your router instance. Calling `router.route()` will search for and run the function you've set up for that instance.
 
+
 ## Response Helper
-### Header Methods
-#### Status Code: `.status()`
+Typing out `res.writeHead()` with status code and content type over and over again can be hideous.
+
+Here is a list of response helper functions available with Eagles. By passing in the `res` object as reference and parameters for status code and content type, Eagles provides an easy way to do the same task. There are also helpers for writing body contents.
+
+
+### Status Code: `.status()`
 `.status()` sets the response status code:
 
 ```
 eagles.status(res, code);
 ```
 
-The `code` should be a 3-digit HTTP status code.
+where `code` should be a 3-digit HTTP status code.
 
-#### Content Type: `.contentType()`
+
+### Content Type: `.contentType()`
 `.contentType()` sets the type of the response body:
 
 ```
@@ -97,7 +105,7 @@ eagles.contentType(res, type);
 | `'jpg'`  | `'image/jpeg'` |
 | `'png'`  | `'image/png'` |
 
-Use both `.status()` and `.contentType()` to write the header:
+**Use both `.status()` and `.contentType()` to write the header:**
 
 ```
 router.get('/hello', function(req, res) {
@@ -116,27 +124,75 @@ router.get('/hello', function(req, res) {
 });
 ```
 
-#### Writing the header in one go: `.resHead()`
-Typing out `res.writeHead()` with status code and content type over and over again can be hideous.
 
-`.resHead()` is a response helper method available with Eagles. By passing in the `res` object as reference and parameters for status code and content type, Eagles provides an easy way to do the same task. It takes the following format:
+### Writing the Header in One Go: `.resHead()`
+Combining `.status()` and `.contentType()`, `.resHead()` is an even faster way to write header and it takes the following format:
 
 ```
 eagles.resHead(res, code, type);
 ```
-`type` takes the same shortcuts as described in the content type section above.
 
-Here's the code in action:
+where `type` takes the same shortcuts as described in the content type section above.
+
+
+### Writing Response Body Data: `.resBody()`
+Writing the response content is straightforward.
+```
+eagles.resBody(res, content);
+```
+
+**Here are `.resHead()` and `.resBody()` in action:**
 
 ```
 router.get('/hello', function(req, res) {
   eagles.resHead(res, 200, 'plain');
-  ...
+  eagles.resBody(res, 'world');
+  res.end();
+});
+```
+
+Both methods are again **chainable**, so this snippet is equivalent to the one above:
+```
+router.get('/hello', function(req, res) {
+  eagles.resHead(res, 200, 'plain').resBody(res, 'world');
+  res.end();
+});
+```
+
+
+### Sending File: `.sendFile()`
+```
+eagles.sendFile(res, filepath);
+```
+
+Nothing will get through as the response if `filepath` is invalid. Be sure to specify in the header a correctly content type before calling `.sendFile()`:
+
+```
+router.get('/helloFile', function(req, res) {
+  eagles.resHead(res, 200, 'html');
+  eagles.sendFile(res, 'path/to/file.html');
+});
+```
+Note that `res.end()` is not needed when using `.sendFile()`, as the read stream will close after all the data has been piped through.
+
+
+### Sending JSON: `.sendJSON()`
+```
+eagles.sendJSON(res, input);
+```
+`input` can be a **JavaScript object, array, or string**, and will be stringified as when it passes through to response. `input` can also be a **filepath**. If the path leads to a JSON file, the content of that file will be used to populate the response. If the path does not lead to a file or if the file does not have the JSON extension, the filepath will be used as the response.
+
+Unlike other response helper methods, `.sendJSON()` defaults to send a 200 status code, set the content type to `application/json`, and automatically end the response once the data is through. So when using `.sendJSON`, this is all you need within the request listener:
+
+```
+router.get('/helloJSON', function(req, res) {
+  eagles.sendJSON(res, {msg: 'hello world'});
+});
+
+router.get('/helloJSON2', function(req, res) {
+  eagles.sendJSON(res, '/some/filepath.json');
 });
 
 ```
 
-### Body Methods
-#### Writing Response Body Data
-#### Sending File
-#### Sending JSON
+Note that you can overwrite the status code with a header method (e.g. `.status()`).

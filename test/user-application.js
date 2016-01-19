@@ -22,8 +22,7 @@ router.get('/hello2.5', function(req, res) {
 });
 
 router.get('/hello3', function(req, res) {
-  eagles.resHead(res, 200, 'plain');
-  eagles.resBody(res, 'polo');
+  eagles.resHead(res, 200, 'plain').resBody(res, 'polo');
   res.end();
 });
 
@@ -49,11 +48,11 @@ router.get('/readobj', function(req, res) {
 });
 
 router.get('/readJSON', function(req, res) {
-  eagles.sendJSON(res,  __dirname + '/test_data/random.json');
+  eagles.sendJSON(res, __dirname + '/test_data/random.json');
 });
 
 router.get('/readnotJSON', function(req, res) {
-  eagles.sendJSON(res,  __dirname + '/test_data/two.html');
+  eagles.sendJSON(res, __dirname + '/test_data/two.html');
 });
 
 
