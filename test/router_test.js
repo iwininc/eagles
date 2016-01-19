@@ -80,7 +80,7 @@ describe('Router', () => {
     var testReq = { method: 'GET', url: '/greet?name=world' };
     var called = false;
 
-    router.get('/greet', function(req, res, query) {
+    router.get('/greet?', function(req, res, query) {
       called = true;
       expect(query.name).to.eql('world');
     });
