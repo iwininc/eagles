@@ -222,3 +222,6 @@ router.get('/helloJSON2', function(req, res) {
 ```
 
 Note that you can overwrite the status code with a header method (e.g. `.status()`).
+
+
+### Static Serve
